@@ -158,6 +158,7 @@ public class CampManagementApplication1 {
             for (Subject subject1 : students1.getSubjectList()) {
                 System.out.println("과목코드번호 : " + subject1.getSubjectId() + "과목이름 : " + subject1.getSubjectName() + "과목타입 : " + subject1.getSubjectType());
             }
+            System.out.println("");
         }
 //            System.out.println("수강생 등록 성공!\n");
     }
