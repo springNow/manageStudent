@@ -1,4 +1,3 @@
-package camp.model;
 
 public class Student {
     private String studentId;

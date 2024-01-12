@@ -1,6 +1,4 @@
-import camp.model.Score;
-import camp.model.Student;
-import camp.model.Subject;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +12,12 @@ import java.util.Scanner;
  * 프로젝트 구조를 변경하거나 기능을 추가해도 괜찮습니다!
  * 구현에 도움을 주기위한 Base 프로젝트입니다. 자유롭게 이용해주세요!
  */
-public class CampManagementApplication {
+
+public class CampManagementApplication1 {
     // 데이터 저장소
-    private static List<Student> studentStore;
-    private static List<Subject> subjectStore;
-    private static List<Score> ScoreStore;
+    private static List<Student> studentList = new ArrayList<>();
+    private static List<Subject> subjectList;
+    private static List<Score> scoreList = new ArrayList<>();
 
     // 과목 타입
     private static String SUBJECT_TYPE_MANDATORY = "MANDATORY";
@@ -35,19 +34,17 @@ public class CampManagementApplication {
     // 스캐너
     private static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         setInitData();
-        try {
-            displayMainView();
-        } catch (Exception e) {
-            System.out.println("\n오류 발생!\n프로그램을 종료합니다.");
-        }
+        displayMainView();
+        System.out.println("\n오류 발생!\n프로그램을 종료합니다.");
+
     }
 
     // 초기 데이터 생성
     private static void setInitData() {
-        studentStore = new ArrayList<>();
-        subjectStore = List.of(
+        studentList = new ArrayList<>();
+        subjectList = List.of(
                 new Subject(
                         sequence(INDEX_TYPE_SUBJECT),
                         "Java",
@@ -94,7 +91,7 @@ public class CampManagementApplication {
                         SUBJECT_TYPE_CHOICE
                 )
         );
-        ScoreStore = new ArrayList<>();
+        scoreList = new ArrayList<>();
     }
 
     // index 자동 증가
@@ -165,75 +162,101 @@ public class CampManagementApplication {
     // 수강생 등록
     private static void createStudent() {
         System.out.println("\n수강생을 등록합니다...");
-        System.out.print("수강생 이름 입력: ");
-        String studentName = sc.next();
+        System.out.print("\n수강생 이름 입력: ");
+
+
         // 기능 구현 (필수 과목, 선택 과목)
-        Student student = new Student(sequence(INDEX_TYPE_STUDENT), studentName); // 수강생 인스턴스 생성 예시 코드
-        // 기능 구현
-        System.out.println("수강생 등록 성공!\n");
-    }
 
-    // 수강생 목록 조회
-    private static void inquireStudent() {
-        System.out.println("\n수강생 목록을 조회합니다...");
-        // 기능 구현
-        System.out.println("\n수강생 목록 조회 성공!");
-    }
+        String studentName = sc.nextLine();
+        for (Subject sj : subjectList){
+            System.out.println(sj.getSubjectId() + sj.getSubjectName() + sj.getSubjectType());
+        }
+        List<Subject>arrayList = new ArrayList <>();    // subject에서 선언
+//        arrayList.add(new Subject());   // 입력받은 값을 비교해서 같은 값이면 입력받은 값을 add 없으면 다시 입력
 
-    private static void displayScoreView() {
-        boolean flag = true;
-        while (flag) {
-            System.out.println("==================================");
-            System.out.println("점수 관리 실행 중...");
-            System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
-            System.out.println("2. 수강생의 과목별 회차 점수 수정");
-            System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
-            System.out.println("4. 메인 화면 이동");
-            System.out.print("관리 항목을 선택하세요...");
-            int input = sc.nextInt();
+//        // hashMap으로 불러오기
+//            Subject subject = new Subject();
+//        // 1 , 장원녕 , 자바 , 1, 필수 (과목이 정해져있던경우 이거 필요없음)
+//        // seq => 너무 어려움, 불필요한 코드 (자동증가)
+//            // 수강생 인스턴스 생성 예시 코드
+//            Student student = new Student(sequence(INDEX_TYPE_STUDENT),장원녕,subject.getSubjectId(),subject.getSubjectType(),subject.getSubjectName());
+////            studentList.add(student);
+        System.out.println("d");
+            System.out.println("수강생 등록 성공!\n");
+        }
 
-            switch (input) {
-                case 1 -> createScore(); // 수강생의 과목별 시험 회차 및 점수 등록
-                case 2 -> updateRoundScoreBySubject(); // 수강생의 과목별 회차 점수 수정
-                case 3 -> inquireRoundGradeBySubject(); // 수강생의 특정 과목 회차별 등급 조회
-                case 4 -> flag = false; // 메인 화면 이동
-                default -> {
-                    System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
-                    flag = false;
+        // 수강생 목록 조회
+        private static void inquireStudent () {
+            System.out.println("\n수강생 목록을 조회합니다...");
+            // 기능 구현
+            System.out.println("\n수강생 목록 조회 성공!");
+        }
+
+        private static void displayScoreView () {
+            boolean flag = true;
+            while (flag) {
+                System.out.println("==================================");
+                System.out.println("점수 관리 실행 중...");
+                System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
+                System.out.println("2. 수강생의 과목별 회차 점수 수정");
+                System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
+                System.out.println("4. 메인 화면 이동");
+                System.out.print("관리 항목을 선택하세요...");
+                int input = sc.nextInt();
+
+                switch (input) {
+                    case 1 -> createScore(); // 수강생의 과목별 시험 회차 및 점수 등록
+                    case 2 -> updateRoundScoreBySubject(); // 수강생의 과목별 회차 점수 수정
+                    case 3 -> inquireRoundGradeBySubject(); // 수강생의 특정 과목 회차별 등급 조회
+                    case 4 -> flag = false; // 메인 화면 이동
+                    default -> {
+                        System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
+                        flag = false;
+                    }
                 }
             }
         }
-    }
 
-    private static String getStudentId() {
-        System.out.print("\n관리할 수강생의 번호를 입력하시오...");
-        return sc.next();
-    }
+        private static String getStudentId () {
+            System.out.print("\n관리할 수강생의 번호를 입력하시오...");
+            return sc.next();
+        }
 
-    // 수강생의 과목별 시험 회차 및 점수 등록
-    private static void createScore() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        System.out.println("시험 점수를 등록합니다...");
-        // 기능 구현
-        System.out.println("\n점수 등록 성공!");
-    }
+        // 수강생의 과목별 시험 회차 및 점수 등록
+        private static void createScore () {
+            String studentId = getStudentId(); // 관리할 수강생 고유 번호
+            System.out.println("시험 점수를 등록합니다...");
+            // 기능 구현
+            System.out.println("\n점수 등록 성공!");
+        }
 
-    // 수강생의 과목별 회차 점수 수정
-    private static void updateRoundScoreBySubject() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        // 기능 구현 (수정할 과목 및 회차, 점수)
-        System.out.println("시험 점수를 수정합니다...");
-        // 기능 구현
-        System.out.println("\n점수 수정 성공!");
-    }
+        // 수강생의 과목별 회차 점수 수정
+        private static void updateRoundScoreBySubject () {
+            String studentId = getStudentId(); // 관리할 수강생 고유 번호
+            // 기능 구현 (수정할 과목 및 회차, 점수)
+            System.out.println("시험 점수를 수정합니다...");
+            // 기능 구현
+            System.out.println("\n점수 수정 성공!");
+        }
 
-    // 수강생의 특정 과목 회차별 등급 조회
-    private static void inquireRoundGradeBySubject() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        // 기능 구현 (조회할 특정 과목)
-        System.out.println("회차별 등급을 조회합니다...");
-        // 기능 구현
-        System.out.println("\n등급 조회 성공!");
-    }
+        // 수강생의 특정 과목 회차별 등급 조회
+        private static void inquireRoundGradeBySubject () {
+            String studentId = getStudentId(); // 관리할 수강생 고유 번호
+            // 기능 구현 (조회할 특정 과목)
+            System.out.println("회차별 등급을 조회합니다...");
+            // 기능 구현
+            System.out.println("\n등급 조회 성공!");
+        }
 
-}
+    }
+    // 캠프 매니저는 수강생을 등록 및 관리할 수 있다
+
+    //  수강생, 과목, 필수여부
+    // 학생번호 key값(UUID)으로 두고 ArrayList 하나 생성
+    // students 와 subject는 상속관계아님
+    // HashMap<studentName, ArrayList<Subject>>
+// 수강생 등록시 이름만 입력 => 과목 선택 list of 로 서브젝트 정보 보여줌
+// 가장 상위개념은 student => 과목 < 점수 (상속)
+// 그후 hashMap에 put
+// 조회할땐 student가 가지는 필드값을 다 입력해야
+//

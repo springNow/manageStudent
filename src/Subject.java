@@ -1,4 +1,3 @@
-package camp.model;
 
 public class Subject {
     private String subjectId;
