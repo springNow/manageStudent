@@ -1,4 +1,4 @@
-
+package manageStudent.src;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,20 +158,58 @@ public class CampManagementApplication1 {
             }
         }
     }
-
     // 수강생 등록
     private static void createStudent() {
         System.out.println("\n수강생을 등록합니다...");
+        //while문 조건
+        boolean swit = true;
+        //과목담을 arrylist생성
+        List<Subject> subjectStudentPick = new ArrayList<>();
+
+        //유저 이름 입력,번호 입력받고
+        sc.nextLine();
         System.out.print("\n수강생 이름 입력: ");
+        String studentName = sc.nextLine();
+        sc.nextLine();
+        System.out.print("\n수강생 번호 입력: ");
+        String studentId = sc.nextLine();
+
+
+        //과목선택
+//        String userPick = sc.nextLine();
+//        while (swit) {
+//            switch (userPick) {
+//                case "Java":
+                    subjectStudentPick.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "Java", SUBJECT_TYPE_MANDATORY));
+//                    break;
+//                case "객체지향":
+                    subjectStudentPick.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "객체지향", SUBJECT_TYPE_MANDATORY));
+//                    break;
+//                default:
+//                    System.out.println("다시입력해주세요.");
+//            }
+//        }
+        //인스턴스 생성
+//        Student student = new Student(studentId, studentName, subjectStudentPick);
+//        System.out.println(student.getStudentId() + student.getStudentName() + student.subjectStudentPick);
+        Student student = new Student(studentId, studentName, subjectStudentPick);
+        studentList.add(student);
+
+
+        //출력 확인
+//        System.out.println(student.getStudentId() + student.getStudentName() + student.subjectStudentPick);
+
+        System.out.println(student.getStudentId() + student.getStudentName() + "\n" + student.getSubjectStudentPick());
+
 
 
         // 기능 구현 (필수 과목, 선택 과목)
 
-        String studentName = sc.nextLine();
-        for (Subject sj : subjectList){
-            System.out.println(sj.getSubjectId() + sj.getSubjectName() + sj.getSubjectType());
-        }
-        List<Subject>arrayList = new ArrayList <>();    // subject에서 선언
+//        String studentName = sc.nextLine();
+//        for (Subject sj : subjectList){
+//            System.out.println(sj.getSubjectId() + sj.getSubjectName() + sj.getSubjectType());
+//        }
+//        List<Subject>arrayList = new ArrayList <>();    // subject에서 선언
 //        arrayList.add(new Subject());   // 입력받은 값을 비교해서 같은 값이면 입력받은 값을 add 없으면 다시 입력
 
 //        // hashMap으로 불러오기
@@ -181,7 +219,6 @@ public class CampManagementApplication1 {
 //            // 수강생 인스턴스 생성 예시 코드
 //            Student student = new Student(sequence(INDEX_TYPE_STUDENT),장원녕,subject.getSubjectId(),subject.getSubjectType(),subject.getSubjectName());
 ////            studentList.add(student);
-        System.out.println("d");
             System.out.println("수강생 등록 성공!\n");
         }
 
