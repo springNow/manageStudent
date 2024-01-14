@@ -1,3 +1,4 @@
+package manageStudent.src;
 
 public class Student {
     private String studentId;
