@@ -142,22 +142,53 @@ public class CampManagementApplication1 {
             System.out.println("수강생 관리 실행 중...");
             System.out.println("1. 수강생 등록");
             System.out.println("2. 수강생 목록 조회");
-            System.out.println("3. 과목 등록하기");
-            System.out.println("4. 메인 화면 이동");
+            System.out.println("3. 수강생 삭제 하기");
+            System.out.println("4. 과목 등록하기");
+            System.out.println("5. 메인 화면 이동");
             System.out.print("관리 항목을 선택하세요...");
             int input = sc.nextInt();
 
             switch (input) {
                 case 1 -> createStudent(); // 수강생 등록
                 case 2 -> inquireStudent(); // 수강생 목록 조회
-                case 3 -> enrollSubject();
-                case 4 -> flag = false; // 메인 화면 이동
+                case 3 -> deleteStudent();
+                case 4 -> enrollSubject();
+                case 5 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
                     flag = false;
                 }
             }
         }
+    }
+
+    private static void deleteStudent() {
+        System.out.println("\n수강생을 삭제 합니다...");
+        System.out.println("수강생 번호 입력: ");
+        System.out.println("ex) ST1");
+
+        String studentId = getStudentId();
+        sc.nextLine(); // 버퍼 빼기
+
+        Student studnet = new Student("가비지객체", "가비지객체");
+        {
+            boolean flag = false;
+            for (Student std : studentStore) {
+                if (std.getStudentId().equalsIgnoreCase(studentId)) {
+                    studnet = std;
+                    flag = true;
+                }
+            }
+
+            if(!flag){
+                System.out.println("해당하는 학생이 없습니다. ");
+                return;
+            }
+        }
+        
+        String studentName = studnet.getStudentName();
+        studentStore.remove(studnet);
+        System.out.println(studentId+" | "+ studentName+" 학생의 삭제가 완료되었습니다. ");
     }
 
     // 수강생 등록
