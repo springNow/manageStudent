@@ -1,5 +1,6 @@
 package manageStudent.src;
 
+
 public class Subject {
     private String subjectId;
     private String subjectName;
@@ -26,8 +27,14 @@ public class Subject {
         return subjectName;
     }
 
+
     public String getSubjectType() {
         return subjectType;
+    }
+
+
+    public String getSubjectNameSearch(String searchSubjectName) {
+        return subjectName;
     }
 
 }
