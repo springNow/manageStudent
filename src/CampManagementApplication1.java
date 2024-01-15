@@ -143,8 +143,10 @@ public class CampManagementApplication1 {
             System.out.println("1. 수강생 등록");
             System.out.println("2. 수강생 목록 조회");
             System.out.println("3. 수강생 삭제 하기");
-            System.out.println("4. 과목 등록하기");
-            System.out.println("5. 메인 화면 이동");
+            System.out.println("4. 수강생의 상태 설정");
+            System.out.println("5. 수강생의 상태 조회");
+            System.out.println("6. 과목 등록하기");
+            System.out.println("7. 메인 화면 이동");
             System.out.print("관리 항목을 선택하세요...");
             int input = sc.nextInt();
 
@@ -152,14 +154,80 @@ public class CampManagementApplication1 {
                 case 1 -> createStudent(); // 수강생 등록
                 case 2 -> inquireStudent(); // 수강생 목록 조회
                 case 3 -> deleteStudent();
-                case 4 -> enrollSubject();
-                case 5 -> flag = false; // 메인 화면 이동
+                case 4 -> setStatusOfStudent();
+                case 5 -> getStatusOfStudent();
+                case 6 -> enrollSubject();
+                case 7 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
                     flag = false;
                 }
             }
         }
+    }
+
+    private static void getStatusOfStudent() {
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
+        System.out.println("ex) ST1");
+        String studentId = getStudentId();
+        sc.nextLine(); // 버퍼를 빼준다.
+
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
+        }
+
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
+        System.out.println(student.getStudentId() + " | " + student.getStudentName() + "의 상태는 ");
+        System.out.println(student.getStatus()+"입니다. ");
+    }
+
+    private static void setStatusOfStudent() {
+
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
+        System.out.println("ex) ST1");
+        String studentId = getStudentId();
+        sc.nextLine(); // 버퍼를 빼준다.
+
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
+        }
+
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
+
+        // 학생의 상태를 입력받고
+        // 학생 상태를 저장해준다.
+        System.out.println(student.getStudentId()+" | "+student.getStudentName()+" 학생의 상태를 입력해주세요..");
+        String studentStatus = sc.nextLine();
+        student.setStatus(studentStatus);
+        System.out.println("학생의 상태가 입력되었습니다. ");
+    }
+
+    // 이 함수는 무조건 checkWhetherIdExisted 함수 뒤에 써야 함.
+    private static Student returnStudent(String studentId) {
+
+        for(Student student : studentStore){
+            if(student.getStudentId().equalsIgnoreCase(studentId))
+                return student;
+        }
+        return new Student("쓸일없는 객체", "쓸일없는 객체");
+    }
+
+    private static boolean checkWhetherIdExisted(String studentId) {
+
+        for(Student std : studentStore){
+            if(std.getStudentId().equalsIgnoreCase(studentId)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void deleteStudent() {
@@ -207,26 +275,20 @@ public class CampManagementApplication1 {
 
 
     private static void enrollSubject() {
-        System.out.println("학생 ID를 입력하세요. ");
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
         System.out.println("ex) ST1");
         String studentId = getStudentId();
 
 
-        Student student = new Student("가비지", "가비지");
-        // 해당 id의 학생이 없으면 method 종료
-        {
-            boolean flag = false;
-            for (Student std : studentStore) {
-                if (std.getStudentId().equalsIgnoreCase(studentId)) {
-                    student = std;
-                    flag = true;
-                }
-            }
-            if(!flag){
-                System.out.println("학생이 목록에 없습니다. ");
-                return ;
-            }
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
         }
+
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
 
         int idxOfMandatory;
         int idxOfOptional;
@@ -346,28 +408,22 @@ public class CampManagementApplication1 {
 
     // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        sc.nextLine() ; // 버퍼를 빼는 scanner
-        System.out.println("시험 점수를 등록합니다...");
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
+        System.out.println("ex) ST1");
+        String studentId = getStudentId();
+        sc.nextLine(); // 버퍼 빼는 sc
 
-        Student student = new Student("가비지객체", "가비지객체");
-        {
-            // 학생 id가 일치하는지 확인하고
-            // 일치하는 학생이 없으면 종료
-            boolean flag = false;
-            for (Student std : studentStore) {
-                if (std.getStudentId().equalsIgnoreCase(studentId)) {
-                    student = std;
-                    flag = true;
-                }
-            }
-
-            if(!flag) {
-                System.out.println("해당하는 학생이 없습니다.");
-                return;
-            }
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
         }
 
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
+
+        System.out.println("시험 점수를 등록합니다...");
         List<Subject> subjects = student.getSubjects();
 
         {
@@ -377,6 +433,7 @@ public class CampManagementApplication1 {
                 int[] scores = sub.getScores();
                 System.out.println(sub.getSubjectName()+"의 점수를 3번 입력하세요.");
                 System.out.println("나가시려면 exit을 눌러주세요.");
+
                 String input = sc.nextLine();
                 if(input.equalsIgnoreCase("exit")){
                     return;
@@ -399,20 +456,20 @@ public class CampManagementApplication1 {
 
     // 수강생의 과목별 회차 점수 수정
     private static void updateRoundScoreBySubject() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        sc.nextLine();
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
+        System.out.println("ex) ST1");
+        String studentId = getStudentId();
+        sc.nextLine(); // 버퍼 빼는 sc
 
-        Student student = new Student("가비지객체", "가비지객체");
-        {
-            boolean flag = false;
-            for(Student std : studentStore){
-
-                if(std.getStudentId().equalsIgnoreCase(studentId)){
-                    flag = true;
-                    student = std;
-                }
-            }
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
         }
+
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
 
         List<Subject> subjects = student.getSubjects();
         {
@@ -444,25 +501,20 @@ public class CampManagementApplication1 {
 
     // 수강생의 특정 과목 회차별 등급 조회
     private static void inquireRoundGradeBySubject() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        sc.nextLine();
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
+        System.out.println("ex) ST1");
+        String studentId = getStudentId();
+        sc.nextLine(); // 버퍼 빼는 sc
 
-        // 기능 구현 (조회할 특정 과목)
-        System.out.println("회차별 등급을 조회합니다...");
-
-        Student student = new Student("가비지", "가비지");
-        {
-            boolean flag = false;
-            for (Student std : studentStore) {
-                if (std.getStudentId().equalsIgnoreCase(studentId)) {
-                    student = std;
-                    flag = true;
-                }
-            }
-            if (!flag) {
-                return;
-            }
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
         }
+
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
 
         List<Subject> subjects = student.getSubjects();
         for(Subject sub : subjects){
