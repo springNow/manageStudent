@@ -238,12 +238,12 @@ public class CampManagementApplication1 {
         String studentId = getStudentId();
         sc.nextLine(); // 버퍼 빼기
 
-        Student studnet = new Student("가비지객체", "가비지객체");
+        Student student = new Student("가비지객체", "가비지객체");
         {
             boolean flag = false;
             for (Student std : studentStore) {
                 if (std.getStudentId().equalsIgnoreCase(studentId)) {
-                    studnet = std;
+                    student = std;
                     flag = true;
                 }
             }
@@ -254,8 +254,8 @@ public class CampManagementApplication1 {
             }
         }
         
-        String studentName = studnet.getStudentName();
-        studentStore.remove(studnet);
+        String studentName = student.getStudentName();
+        studentStore.remove(student);
         System.out.println(studentId+" | "+ studentName+" 학생의 삭제가 완료되었습니다. ");
     }
 
@@ -431,16 +431,38 @@ public class CampManagementApplication1 {
             for(Subject sub : subjects){
 
                 int[] scores = sub.getScores();
-                System.out.println(sub.getSubjectName()+"의 점수를 3번 입력하세요.");
+                System.out.println(sub.getSubjectName()+"의 점수를 10번 입력하세요.");
                 System.out.println("나가시려면 exit을 눌러주세요.");
 
                 String input = sc.nextLine();
                 if(input.equalsIgnoreCase("exit")){
                     return;
                 }
+
                 scores[0] = Integer.parseInt(input);
-                scores[1] = Integer.parseInt(sc.nextLine());
-                scores[2] = Integer.parseInt(sc.nextLine());
+                try{
+                    if(scores[0]<0 || scores[0] > 100){
+                        scores[0] = -1;
+                        throw new Exception();
+                    }
+                }catch(Exception e){
+                    System.out.println("점수 입력이 잘못되었습니다. 전 화면으로 돌아갑니다. ");
+                    return;
+                }
+
+                for(int i=1; i< scores.length; i++){
+
+                    scores[i] = Integer.parseInt(sc.nextLine());
+                    try{
+                        if(scores[i]<0 || scores[i] > 100){
+                            scores[i] = -1;
+                            throw new Exception();
+                        }
+                    }catch(Exception e){
+                        System.out.println("점수 입력이 잘못되었습니다. 전 화면으로 돌아갑니다. ");
+                        return;
+                    }
+                }
             } // for
         }
         // 기능 구현
@@ -483,10 +505,19 @@ public class CampManagementApplication1 {
         {
             System.out.println("과목을 번호를 선택해주세요. ");
             int subNum = Integer.parseInt(sc.nextLine());
-            System.out.println("과목 회차를 선택해주세요(0, 1, 2)회차 중 선택");
+            System.out.println("과목 회차를 선택해주세요(0 ~ 9)회차 중 선택");
             int numOfTest = Integer.parseInt(sc.nextLine());
             System.out.println("과목 점수를 선택해주세요");
             int scoreOfTest = Integer.parseInt(sc.nextLine());
+            try{
+                if(scoreOfTest>100 || scoreOfTest<0){
+                    throw new Exception();
+                }
+            }catch(Exception e){
+                System.out.println("점수를 잘 못 입력했습니다. 이전 화면으로 돌아갑니다.");
+                return;
+            }
+
 
             subjects.get(subNum).getScores()[numOfTest] = scoreOfTest;
             System.out.println("점수가 성공적으로 수정되었습니다.");

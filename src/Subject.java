@@ -3,7 +3,7 @@ public class Subject {
     private String subjectName;
     private String subjectType;
 
-    int[] scores = new int[3];
+    int[] scores = new int[10];
 
     public Subject(String seq, String subjectName, String subjectType) {
         this.subjectId = seq;
