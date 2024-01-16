@@ -4,8 +4,8 @@ import java.util.List;
 public class Student {
     private String studentId;
     private String studentName;
-
     private String status = "입력되지 않음";
+
 
     private List<Subject> subjects;
 
@@ -25,7 +25,7 @@ public class Student {
 
     public List<Subject> getSubjects() {
         return subjects;
-    }
+
 
     // Getter
     public String getStudentId() {
@@ -36,5 +36,16 @@ public class Student {
         return studentName;
     }
 
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> setListSubject) {
+        this.subjects = setListSubject;
+    }
+
+    public void addSubject(Subject subject){
+        this.subjects.add(subject);
+    }
 }
 
