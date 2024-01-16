@@ -1,3 +1,4 @@
+package Subject;
 
 public class Subject {
     private String subjectId;
@@ -10,11 +11,13 @@ public class Subject {
         this.subjectType = subjectType;
     }
 
-    public Subject(String subjectName){
+    public Subject(String subjectName) {
         this.subjectName = subjectName;
     }
+
     // Getter
-    public Subject(){}
+    public Subject() {
+    }
 
 
     public String getSubjectId() {
@@ -27,6 +30,10 @@ public class Subject {
 
     public String getSubjectType() {
         return subjectType;
+    }
+
+    public String toString() {
+        return "과목코드 : " + subjectId + " | " + "과목이름 : " + subjectName + " | " + "필수유무 : " + subjectType;
     }
 
 }
