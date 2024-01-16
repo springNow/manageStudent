@@ -294,7 +294,7 @@ public class CampManagementApplication1 {
         int idxOfOptional;
         {
             // 의무 과목 입력
-            sc.nextLi;
+            sc.nextLine();
             System.out.println("필수 과목 몇 개를 선택하시겠습니까? (3개이상 5개 이하)");
             idxOfMandatory = Integer.parseInt(sc.nextLine());
             try{
