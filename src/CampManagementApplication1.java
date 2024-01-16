@@ -398,7 +398,7 @@ public class CampManagementApplication1 {
 
     // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
-        System.out.println("해당 학생의 ID를 입력해주세요. ");
+        System.out.println("해당 학생의 ID를 입력해주세요. ");;;
         System.out.println("ex) ST1");
         String studentId = getStudentId();
         sc.nextLine(); // 버퍼 빼는 sc
