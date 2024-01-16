@@ -25,6 +25,15 @@ public class CampManagementApplication1 {
 //    private static Iterator it =  studentNoSubjectArr.entrySet().iterator();
     //<Map<String,List<Subject>>>
 
+//    //studentInfoArray : 선택한 과목 입력 List
+//    private static List<Subject> studentInfoArray = new ArrayList<>();
+//    //subjectDistinctList : 과목 추가시 remove
+//    private static List<String> subjectsDistictList = new ArrayList<>();
+//    //subjectsAddList : 과목 추가시 add
+//    private static List<String> subjectsAddList = new ArrayList<>();
+//    //subjectsString : 과목명 추가
+//    private static List<String> subjectsString = new ArrayList<>();
+
     static Subject subject = new Subject();
 
     // 과목 타입
@@ -57,9 +66,6 @@ public class CampManagementApplication1 {
         studentList = new ArrayList<>();
         subjectList = List.of(new Subject(sequence(INDEX_TYPE_SUBJECT), "Java", SUBJECT_TYPE_MANDATORY), new Subject(sequence(INDEX_TYPE_SUBJECT), "객체지향", SUBJECT_TYPE_MANDATORY), new Subject(sequence(INDEX_TYPE_SUBJECT), "Spring", SUBJECT_TYPE_MANDATORY), new Subject(sequence(INDEX_TYPE_SUBJECT), "JPA", SUBJECT_TYPE_MANDATORY), new Subject(sequence(INDEX_TYPE_SUBJECT), "MySQL", SUBJECT_TYPE_MANDATORY), new Subject(sequence(INDEX_TYPE_SUBJECT), "디자인 패턴", SUBJECT_TYPE_CHOICE), new Subject(sequence(INDEX_TYPE_SUBJECT), "Spring Security", SUBJECT_TYPE_CHOICE), new Subject(sequence(INDEX_TYPE_SUBJECT), "Redis", SUBJECT_TYPE_CHOICE), new Subject(sequence(INDEX_TYPE_SUBJECT), "MongoDB", SUBJECT_TYPE_CHOICE));
         scoreList = new ArrayList<>();
-        for (Subject subject1 : subjectList) {
-            System.out.println("필수유무 : " + subject1.getSubjectType() + "과목이름 : " + subject1.getSubjectName() + "과목번호 : " + subject1.getSubjectId());
-        }
     }
 
     // index 자동 증가
@@ -133,25 +139,24 @@ public class CampManagementApplication1 {
     private static void createStudent() {
         //입력할 학생 인스턴스 생성
         Student student = new Student();
-//        studentInfoArray : 선택한 과목 입력 List
+        //studentInfoArray : 선택한 과목 입력 List
         List<Subject> studentInfoArray = new ArrayList<>();
         //subjectDistinctList : 과목 추가시 remove
         List<String> subjectsDistictList = new ArrayList<>();
-        subjectsDistictList.add("Java");
-        subjectsDistictList.add("객체지향");
-        subjectsDistictList.add("Spring");
-        subjectsDistictList.add("JPA");
-        subjectsDistictList.add("MySQL");
-        subjectsDistictList.add("디자인 패턴");
-        subjectsDistictList.add("Spring Security");
-        subjectsDistictList.add("Redis");
-        subjectsDistictList.add("MongoDB");
         //subjectsAddList : 과목 추가시 add
         List<String> subjectsAddList = new ArrayList<>();
         //subjectsString : 과목명 추가
         List<String> subjectsString = new ArrayList<>();
 
-
+        subjectsDistictList.add("SU1");
+        subjectsDistictList.add("SU2");
+        subjectsDistictList.add("SU3");
+        subjectsDistictList.add("SU4");
+        subjectsDistictList.add("SU5");
+        subjectsDistictList.add("SU6");
+        subjectsDistictList.add("SU7");
+        subjectsDistictList.add("SU8");
+        subjectsDistictList.add("SU9");
 
         System.out.println(subjectsDistictList.size());
         sc.nextLine();
@@ -160,119 +165,41 @@ public class CampManagementApplication1 {
         System.out.println("수강생 이름 입력: ");
         String studentName = sc.nextLine();
 
-
-
+        for (Subject subject1 : subjectList) {
+            System.out.println("필수유무 : " + subject1.getSubjectType() + "과목이름 : " + subject1.getSubjectName() + "과목번호 : " + subject1.getSubjectId());
+        }
         while(subjectsDistictList.size() > 0) {
+
             System.out.println("수강할 과목 입력:");
-            //수강생이 과목 입력 : studentSubject
+            //수강생이 과목코드 입력 : studentSubject
             String studentSubject = sc.nextLine();
 
-            //학생이 그만 이라했을떄
-            if (studentSubject.equals("그만")) {
-                if(!(Collections.frequency(subjectsString,"MANDATORY")>2 && Collections.frequency(subjectsString,"CHOICE")>1)) {
-                    System.out.println("신청하신 과목 목록입니다.");
-                    for (Subject subject1 : studentInfoArray) {
-                        System.out.println(subject1.getSubjectName() + "  ||  " + subject1.getSubjectType() );
+            if (subjectsDistictList.contains(studentSubject)){
+               getStudentInfoArrayMan(studentSubject,studentInfoArray,subjectsDistictList,subjectsAddList,subjectsString);
+                System.out.println("그만입력하시려면 exit를 계속 입력하시려면 엔터를 입력해주세요.");
+                String stopSign = sc.nextLine();
+                if (stopSign.equals("exit")){
+                    if(!(Collections.frequency(subjectsString,"MANDATORY")>2 && Collections.frequency(subjectsString,"CHOICE")>1)) {
+                        System.out.println("과목을 더 선택해주세요. ");
+                        continue;
                     }
+                    student = new Student(sequence(INDEX_TYPE_STUDENT), studentName, studentInfoArray);
+                    studentList.add(student);
 
-                    System.out.println("과목을 더 선택해주세요. ");
-                   continue;
-                }
-                student = new Student(sequence(INDEX_TYPE_STUDENT), studentName, studentInfoArray);
-                studentList.add(student);
-                studentNoSubjectArr.put(student.getStudentId(),studentInfoArray);
-                System.out.println(studentNoSubjectArr);
+                    for(Map.Entry<String,List<Subject>> entry : studentNoSubjectArr.entrySet()){
+                        if(studentNoSubjectArr.keySet().equals(student)){
+                            String key = entry.getKey();
+                            List<Subject> value =  entry.getValue();
+                        }
+                    }
+                    studentNoSubjectArr.put(student.getStudentId(),studentInfoArray);
+//                    if(studentNoSubjectArr.containsKey(student.getStud entId())){
+//                        System.out.println(studentNoSubjectArr.get(student.getStudentId()));
+//                    }
 
-                System.out.println("학생번호:" +  student.getStudentId() + "|| 학생이름: " + student.getStudentName());
-                System.out.println("신청하신 과목 목록입니다.");
-                for (Subject subject1 : studentInfoArray) {
-                    System.out.println(subject1.getSubjectName() + "  ||  " + subject1.getSubjectType() );
-                }
-                break;
-            //학생이 과목명입력했는데 중복입력안할때
-            } else if (subjectsDistictList.contains(studentSubject)){
-                switch (studentSubject) {
-                    case "Java":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "Java", SUBJECT_TYPE_MANDATORY));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("Java지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("Java추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_MANDATORY);
-                        System.out.println("MANDATORY 추가"+subjectsString);
-                        break;
-                    case "객체지향":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "객체지향", SUBJECT_TYPE_MANDATORY));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("객체지향지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("객체지향추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_MANDATORY);
-                        System.out.println("MANDATORY 추가"+subjectsString);
-                        break;
-                    case "Spring":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "Spring", SUBJECT_TYPE_MANDATORY));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("Spring지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("Spring추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_MANDATORY);
-                        System.out.println("MANDATORY 추가"+subjectsString);
-                        break;
-                    case "JPA":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "JPA", SUBJECT_TYPE_MANDATORY));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("JPA지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("JPA추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_MANDATORY);
-                        System.out.println("MANDATORY 추가"+subjectsString);
-                        break;
-                    case "MySQL":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "MySQL", SUBJECT_TYPE_MANDATORY));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("MySQL지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("MySQL추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_MANDATORY);
-                        System.out.println("MANDATORY 추가"+subjectsString);
-                        break;
-                    case "디자인 패턴":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "디자인 패턴", SUBJECT_TYPE_CHOICE));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("디자인 패턴지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("디자인 패턴추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_CHOICE);
-                        System.out.println("CHOICE 추가"+subjectsString);
-                        break;
-                    case "Spring Security":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "Spring Security", SUBJECT_TYPE_CHOICE));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("Spring Security지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("Spring Security추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_CHOICE);
-                        System.out.println("CHOICE 추가"+subjectsString);
-                        break;
-                    case "Redis":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "Redis", SUBJECT_TYPE_CHOICE));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("Redis지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("Redis추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_CHOICE);
-                        System.out.println("CHOICE 추가"+subjectsString);
-                        break;
-                    case "MongoDB":
-                        studentInfoArray.add(new Subject(sequence(INDEX_TYPE_SUBJECT), "MongoDB", SUBJECT_TYPE_CHOICE));
-                        subjectsDistictList.remove(studentSubject);
-                        System.out.println("MongoDB지우기"+subjectsDistictList);
-                        subjectsAddList.add(studentSubject);
-                        System.out.println("MongoDB추가"+subjectsAddList);
-                        subjectsString.add(SUBJECT_TYPE_CHOICE);
-                        System.out.println("CHOICE 추가"+subjectsString);
-                        break;
+                    System.out.println("학생번호:" +  student.getStudentId() + "|| 학생이름: " + student.getStudentName());
+                    getStudentSubjectList(studentName, studentList);
+                    break;
                 }
             } else if (subjectsAddList.contains(studentSubject)){
                 System.out.println(studentSubject);
@@ -288,18 +215,7 @@ public class CampManagementApplication1 {
         subjectsDistictList.clear();
         subjectsAddList.clear();
     }
-
-
-        //원녕님 작성 코드
-//            if (studentSubject.equals(subjectName)) {
-//                System.out.println(subjectName);// equals인 위치 출력
-//                studentInfoArray.add(subjectListData);
-//                // 입력된 데이터가 가지고 있는 값을 subjectList에 넣어준다.
-//                student = new Student(sequence(INDEX_TYPE_STUDENT), studentName, studentInfoArray);
-//            }
-//
-
-//        // hashMap으로 불러오기
+    //        // hashMap으로 불러오기
 //            Subject subject = new Subject();
 //        // 1 , 장원녕 , 자바 , 1, 필수 (과목이 정해져있던경우 이거 필요없음)
 //        // seq => 너무 어려움, 불필요한 코드 (자동증가)
@@ -333,7 +249,7 @@ public class CampManagementApplication1 {
                 int input = sc.nextInt();
 
                 switch (input) {
-                    case 1 -> createScore(studentList, sc, studentNoSubjectArr); // 수강생의 과목별 시험 회차 및 점수 등록
+//                    case 1 -> createScore(studentList, studentNoSubjectArr); // 수강생의 과목별 시험 회차 및 점수 등록
                     case 2 -> updateRoundScoreBySubject(); // 수강생의 과목별 회차 점수 수정
                     case 3 -> inquireRoundGradeBySubject(); // 수강생의 특정 과목 회차별 등급 조회
                     case 4 -> flag = false; // 메인 화면 이동
@@ -351,92 +267,92 @@ public class CampManagementApplication1 {
         }
 
         // 수강생의 과목별 시험 회차 및 점수 등록
-        private static void createScore (List<Student>studentList,Scanner sc, Map<String,List<Subject>> studentNoSubjectArr) {
-            String studentId = getStudentId(); // 관리할 수강생 고유 번호
-            //점수넣을 list생성
-            List<String> scoreWhat = new ArrayList<>();
-            //Iterator 생성 과정
-//            Set set = studentNoSubjectArr.entrySet();
-//            Iterator it = set.iterator();
-            System.out.println("시험 점수를 등록합니다...");
-                for(Student student : studentList){
-                    if (studentNoSubjectArr.containsKey(studentId)){
-                        //점수를 입력해서 scoreWhat에 합치기
-                        for (Subject subject : studentNoSubjectArr.get(studentId)) {
-                            System.out.println(subject.getSubjectName());
-                            System.out.println("점수를 입력해 주세요.");
-                            String studentScoreWhat = sc.nextLine();
-                            scoreWhat.add(studentScoreWhat);
-                        }
-                        //학생의 ID, 과목리스트, 과목별 점수를 scoreList에 저장
-                        Score score = new Score(studentNoSubjectArr,scoreWhat);
-                        scoreList.add(score);
-                        for (Score score2 : scoreList){
-                            System.out.println(scoreList.getStudentNoSubjectArr());
-                        }
-
-//                        //회차 입력
-//                        System.out.println("회차를 입력해 주세요.");
-//                        int studentScoreId = sc.nextInt();
-//                            // scoreList에 점수 넣어야함.
-//                            switch(studentScoreId){
-//                                case 1:
-//                                    for (Subject subject : studentNoSubjectArr.get(studentId)) {
-//                                        System.out.println(subject.getSubjectName());
-//                                        System.out.println("점수를 입력해 주세요.");
-//                                        int studentScoreWhat = sc.nextInt();
-//                                    }
-//                                    Score score = new Score(studentId, subjectList,)
-//                                    scoreList.add()
-//                                    break;
-//                                case 2:
-//                                    for (Subject subject1 : studentNoSubjectArr.get(studentId)) {
-//                                        System.out.println(subject.getSubjectName());
-//                                        System.out.println("점수를 입력해 주세요.");
-//                                        int studentScoreWhat1 = sc.nextInt();
-//                                    }
-//                                    break;
-//                                case 3:
-//                                    for (Subject subject2 : studentNoSubjectArr.get(studentId)) {
-//                                        System.out.println(subject.getSubjectName());
-//                                        System.out.println("점수를 입력해 주세요.");
-//                                        int studentScoreWhat2 = sc.nextInt();
-//                                    }
-//                                    break;
-//                                default:
-//                                    System.out.println("1~3회차 까지만 있습니다.");
-//                            }
-                    }
-
-                }
-
-//            입력받은 studentId에 해당하는 value사이즈 확인
-//            for (Subject subject : studentNoSubjectArr.get(studentId)) {
+//        private static void createScore (List<Student>studentList, Map<String,List<Subject>> studentNoSubjectArr) {
+//            String studentId = getStudentId(); // 관리할 수강생 고유 번호
+//            //점수넣을 list생성
+//            List<String> scoreWhat = new ArrayList<>();
+//            //Iterator 생성 과정
+////            Set set = studentNoSubjectArr.entrySet();
+////            Iterator it = set.iterator();
+//            System.out.println("시험 점수를 등록합니다...");
+//                for(Student student : studentList){
+//                    if (studentNoSubjectArr.containsKey(studentId)){
+//                        //점수를 입력해서 scoreWhat에 합치기
+//                        for (Subject subject : studentNoSubjectArr.get(studentId)) {
 //                            System.out.println(subject.getSubjectName());
-//            }
-//            for(int i = 0; i < studentNoSubjectArr.get(studentId).size(); i++) {
-//                System.out.println(subject.getSubjectName());
-//            }
-//                        studentNoSubjectArr.get(studentId).size()
-//            while (it.hasNext()) {
-//                if(student.getStudentId().equals(studentId)){
+//                            System.out.println("점수를 입력해 주세요.");
+//                            String studentScoreWhat = sc.nextLine();
+//                            scoreWhat.add(studentScoreWhat);
+//                        }
+//                        //학생의 ID, 과목리스트, 과목별 점수를 scoreList에 저장
+//                        Score score = new Score(studentNoSubjectArr,scoreWhat);
+//                        scoreList.add(score);
+//                        for (Score score2 : scoreList){
+//                            System.out.println(scoreList.getStudentNoSubjectArr().get().getName());
+//                        }
+//
+////                        //회차 입력
+////                        System.out.println("회차를 입력해 주세요.");
+////                        int studentScoreId = sc.nextInt();
+////                            // scoreList에 점수 넣어야함.
+////                            switch(studentScoreId){
+////                                case 1:
+////                                    for (Subject subject : studentNoSubjectArr.get(studentId)) {
+////                                        System.out.println(subject.getSubjectName());
+////                                        System.out.println("점수를 입력해 주세요.");
+////                                        int studentScoreWhat = sc.nextInt();
+////                                    }
+////                                    Score score = new Score(studentId, subjectList,)
+////                                    scoreList.add()
+////                                    break;
+////                                case 2:
+////                                    for (Subject subject1 : studentNoSubjectArr.get(studentId)) {
+////                                        System.out.println(subject.getSubjectName());
+////                                        System.out.println("점수를 입력해 주세요.");
+////                                        int studentScoreWhat1 = sc.nextInt();
+////                                    }
+////                                    break;
+////                                case 3:
+////                                    for (Subject subject2 : studentNoSubjectArr.get(studentId)) {
+////                                        System.out.println(subject.getSubjectName());
+////                                        System.out.println("점수를 입력해 주세요.");
+////                                        int studentScoreWhat2 = sc.nextInt();
+////                                    }
+////                                    break;
+////                                default:
+////                                    System.out.println("1~3회차 까지만 있습니다.");
+////                            }
+//                    }
 //
 //                }
-//            }
-            System.out.println("목록 출력 후 입력전");
-            sc.nextLine();
-            String addScore = sc.nextLine();
-
-
-//                        //회차 및 점수 입력
-//                        System.out.println("회차를 입력 해 주세요.");
-//                        addScore = sc.nextLine();
 //
-//                        System.out.println("점수를 입력 해 주세요.");
-//                        addScore = sc.nextLine();
-            // 기능 구현
-            System.out.println("\n점수 등록 성공!");
-        }
+////            입력받은 studentId에 해당하는 value사이즈 확인
+////            for (Subject subject : studentNoSubjectArr.get(studentId)) {
+////                            System.out.println(subject.getSubjectName());
+////            }
+////            for(int i = 0; i < studentNoSubjectArr.get(studentId).size(); i++) {
+////                System.out.println(subject.getSubjectName());
+////            }
+////                        studentNoSubjectArr.get(studentId).size()
+////            while (it.hasNext()) {
+////                if(student.getStudentId().equals(studentId)){
+////
+////                }
+////            }
+//            System.out.println("목록 출력 후 입력전");
+//            sc.nextLine();
+//            String addScore = sc.nextLine();
+//
+//
+////                        //회차 및 점수 입력
+////                        System.out.println("회차를 입력 해 주세요.");
+////                        addScore = sc.nextLine();
+////
+////                        System.out.println("점수를 입력 해 주세요.");
+////                        addScore = sc.nextLine();
+//            // 기능 구현
+//            System.out.println("\n점수 등록 성공!");
+//        }
 
         // 수강생의 과목별 회차 점수 수정
         private static void updateRoundScoreBySubject () {
@@ -478,6 +394,25 @@ public class CampManagementApplication1 {
 //            //subjectsString : 과목명 추가
 //            List<String> subjectsString = new ArrayList<>();
 //        }
+        private static void getStudentInfoArrayMan(String studentSubject, List<Subject>studentInfoArray, List<String>subjectsDistictList, List<String>subjectsAddList,List<String>subjectsString){
+            for(Subject sub : subjectList) {
+                if (sub.getSubjectId().equals(studentSubject)) {
+                    studentInfoArray.add(new Subject(studentSubject, sub.getSubjectName(), sub.getSubjectType()));
+                    subjectsDistictList.remove(studentSubject);
+                    subjectsAddList.add(studentSubject);
+                    subjectsString.add(sub.getSubjectType());
+                }
+            }
+        }
+
+        private static void getStudentSubjectList (String studentName, List<Student>studentList) {
+            System.out.println("신청하신 과목 목록입니다.");
+            for (Student student : studentList) {
+                if(student.getStudentName().equals(studentName)) {
+                    System.out.println(student.getStudentInfoArray());
+                }
+            }
+        }
     }
 
 

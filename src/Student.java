@@ -6,7 +6,7 @@ import java.util.List;
 public class Student {
     private String studentId;
     private String studentName;
-    List<Subject> subjectList;
+    List<Subject> studentInfoArray;
     public Student(){}
 
     public Student(String seq){
@@ -17,10 +17,10 @@ public class Student {
         this.studentName = studentName;
     }
 
-    public Student(String seq, String studentName, List<Subject> subjectList) {
+    public Student(String seq, String studentName, List<Subject> studentInfoArray) {
         this.studentId = seq;
         this.studentName = studentName;
-        this.subjectList = subjectList;
+        this.studentInfoArray = studentInfoArray;
     }
 
     // Getter
@@ -33,7 +33,7 @@ public class Student {
     }
 
 
-    public List<Subject> getSubjectList(){
-        return subjectList;
+    public List<Subject> getStudentInfoArray(){
+        return studentInfoArray;
     }
 }
