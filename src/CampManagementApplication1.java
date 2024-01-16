@@ -231,32 +231,22 @@ public class CampManagementApplication1 {
     }
 
     private static void deleteStudent() {
-        System.out.println("\n수강생을 삭제 합니다...");
-        System.out.println("수강생 번호 입력: ");
+        System.out.println("해당 학생의 ID를 입력해주세요. ");
         System.out.println("ex) ST1");
-
         String studentId = getStudentId();
-        sc.nextLine(); // 버퍼 빼기
 
-        Student student = new Student("가비지객체", "가비지객체");
-        {
-            boolean flag = false;
-            for (Student std : studentStore) {
-                if (std.getStudentId().equalsIgnoreCase(studentId)) {
-                    student = std;
-                    flag = true;
-                }
-            }
 
-            if(!flag){
-                System.out.println("해당하는 학생이 없습니다. ");
-                return;
-            }
+        // 해당학생이 있는지 check 해주는 함수
+        if(!checkWhetherIdExisted(studentId)){
+            System.out.println("해당 학생이 존재하지 않습니다");
+            System.out.println("이전화면으로 돌아갑니다.");
+            return;
         }
-        
-        String studentName = student.getStudentName();
+
+        // id를 주면 해당 student를 반환하는 함수
+        Student student = returnStudent(studentId);
         studentStore.remove(student);
-        System.out.println(studentId+" | "+ studentName+" 학생의 삭제가 완료되었습니다. ");
+        System.out.println(studentId + " 학생의 삭제가 완료되었습니다. ");
     }
 
     // 수강생 등록
@@ -501,6 +491,7 @@ public class CampManagementApplication1 {
 
             }
         }
+
 
         {
             System.out.println("과목을 번호를 선택해주세요. ");
